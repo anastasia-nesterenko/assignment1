@@ -35,13 +35,40 @@ namespace Converter
                     // Decrypt the bytes to a string
                     string decrypted = encryptDecrypt.Decrypt(encrypted, aes.Key, aes.IV); 
                     // Print decrypted string
-                    Console.WriteLine($"Decrypted data: {decrypted}"); }
+                    Console.WriteLine($"Decrypted data: {decrypted}"); 
+                }
             }
-            catch (Exception exp) { Console.WriteLine(exp.Message); }
+            catch (Exception exp) 
+            { 
+                Console.WriteLine(exp.Message); 
+            }
+
+            Console.WriteLine("Enter number that needs to be encrypted");
+            int number = int.Parse(Console.ReadLine());
+
+            NumberConverter numberConverter = new NumberConverter();
+            Console.Write("Binary= "); 
+            for (int i = numberConverter.DecimaltoBinary(number).Length-1; i >= 0; i--)
+            {
+                Console.Write(numberConverter.DecimaltoBinary(number)[i]); 
+            }
+            Console.WriteLine();
+
+            Console.Write("Octal= ");
+            for (int i = numberConverter.DecimalToOctal(number).Length-1; i >= 0; i--)
+            {
+                Console.Write(numberConverter.DecimalToOctal(number)[i]);
+            }
+            Console.WriteLine();
+
+            Console.WriteLine($"Hexadecimal= { numberConverter.DecimalToHexadecimal(number)}");
+
+            Console.WriteLine("Enter text that needs to be encrypted");
+            Base64Converter base64Converter = new Base64Converter();
+            string text = Console.ReadLine();
+            Console.WriteLine($"Base64= {base64Converter.Base64(text)}");
+
             Console.ReadLine();
-
-
-
         }
 
     }
