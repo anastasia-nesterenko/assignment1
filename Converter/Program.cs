@@ -16,7 +16,7 @@ namespace Converter
             string original = sb.BinaryToStr(binary);
 
             Console.WriteLine($"Binary of {data} = {binary}");
-            
+
             Console.WriteLine($"Binary {binary} to String : = {original}");
 
             Console.WriteLine("Enter text that needs to be encrypted");
@@ -25,37 +25,37 @@ namespace Converter
             try
             {
                 // Create Aes that generates a new key and initialization vector (IV).   
-                using (AesManaged aes = new AesManaged()) 
+                using (AesManaged aes = new AesManaged())
                 {
                     EncryptDecrypt encryptDecrypt = new EncryptDecrypt();
                     // Encrypt string    
-                    byte[] encrypted = encryptDecrypt.Encrypt(data2, aes.Key, aes.IV); 
+                    byte[] encrypted = encryptDecrypt.Encrypt(data2, aes.Key, aes.IV);
                     // Print encrypted string   
-                    Console.WriteLine($"Encrypted data: {System.Text.Encoding.UTF8.GetString(encrypted)}"); 
+                    Console.WriteLine($"Encrypted data: {System.Text.Encoding.UTF8.GetString(encrypted)}");
                     // Decrypt the bytes to a string
-                    string decrypted = encryptDecrypt.Decrypt(encrypted, aes.Key, aes.IV); 
+                    string decrypted = encryptDecrypt.Decrypt(encrypted, aes.Key, aes.IV);
                     // Print decrypted string
-                    Console.WriteLine($"Decrypted data: {decrypted}"); 
+                    Console.WriteLine($"Decrypted data: {decrypted}");
                 }
             }
-            catch (Exception exp) 
-            { 
-                Console.WriteLine(exp.Message); 
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.Message);
             }
 
             Console.WriteLine("Enter number that needs to be encrypted");
             int number = int.Parse(Console.ReadLine());
 
             NumberConverter numberConverter = new NumberConverter();
-            Console.Write("Binary= "); 
-            for (int i = numberConverter.DecimaltoBinary(number).Length-1; i >= 0; i--)
+            Console.Write("Binary= ");
+            for (int i = numberConverter.DecimaltoBinary(number).Length - 1; i >= 0; i--)
             {
-                Console.Write(numberConverter.DecimaltoBinary(number)[i]); 
+                Console.Write(numberConverter.DecimaltoBinary(number)[i]);
             }
             Console.WriteLine();
 
             Console.Write("Octal= ");
-            for (int i = numberConverter.DecimalToOctal(number).Length-1; i >= 0; i--)
+            for (int i = numberConverter.DecimalToOctal(number).Length - 1; i >= 0; i--)
             {
                 Console.Write(numberConverter.DecimalToOctal(number)[i]);
             }

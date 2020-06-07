@@ -7,51 +7,6 @@ namespace Converter.Models
 {
     public class Base64Converter
     {
-        public string Base64(string str)
-        {
-            var bits = string.Empty;
-            foreach (var character in str)
-            {
-                bits += Convert.ToString(character, 2).PadLeft(8, '0');
-            }
-
-            string base64 = string.Empty;
-
-            const byte threeOctets = 24;
-            var octetsTaken = 0;
-            while (octetsTaken < bits.Length)
-            {
-                var octets = bits.Skip(octetsTaken).Take(threeOctets).ToList();
-
-                const byte sixBits = 6;
-                int hextetsTaken = 0;
-                while (hextetsTaken < octets.Count())
-                {
-                    var chunk = octets.Skip(hextetsTaken).Take(sixBits);
-                    hextetsTaken += sixBits;
-
-                    var bitString = chunk.Aggregate(string.Empty, (current, currentBit) => current + currentBit);
-
-                    if (bitString.Length < 6)
-                    {
-                        bitString = bitString.PadRight(6, '0');
-                    }
-                    var singleInt = Convert.ToInt32(bitString, 2);
-
-                    base64 += Base64Letters[singleInt];
-                }
-
-                octetsTaken += threeOctets;
-            }
-
-            //  When we lack 1 or 2 octects out of our 24 bit string, we need to pad the end of the base64 string with =
-            for (var i = 0; i < (bits.Length % 3); i++)
-            {
-                base64 += "=";
-            }
-
-            return base64;
-        }
         private static readonly char[] Base64Letters = new[]
                                         {
                                               'A'
@@ -119,5 +74,63 @@ namespace Converter.Models
                                             , '+'
                                             , '/'
                                         };
+
+        public string Base64(string str) {
+            StringToBinary stringToBinary = new StringToBinary();
+            string binary = stringToBinary.StrToBinary(str);
+            
+            //count number of paddings 
+            List<string> test = new List<string>();
+            int paddings = binary.Length % 6;
+            if (paddings > 0) {
+                paddings = (6 - paddings) / 2;
+            }
+             
+            //splitting to 6-bits 
+            while (binary!="") {
+                if (binary.Length > 5)
+                    test.Add(binary.Substring(0, 6));
+                else
+                {
+                    string padding = binary.Substring(0, binary.Length).PadRight(6, '0');
+                    test.Add(padding);
+                    break;
+                }
+                binary = binary.Substring(6);
+            }
+            
+            //getting decimal from 6-bits
+            List<int> decimals = new List<int>();
+            foreach (string tt in test)
+            {
+                int num = int.Parse(tt);
+                int binVal, decVal = 0, baseVal = 1, rem;
+                while (num > 0)
+                {
+                    rem = num % 10;
+                    decVal = decVal + rem * baseVal;
+                    num = num / 10;
+                    baseVal = baseVal * 2;
+                }
+                decimals.Add(decVal);
+
+            }
+
+            //getting base64
+            List<char> chars = new List<char>();
+            foreach (int item in decimals)
+            {
+                chars.Add(Base64Letters[item]);
+            }
+            string result = new string(chars.ToArray());
+
+            //adding '=' if required
+            for (var i = 0; i < paddings; i++)
+            {
+                result += "=";
+            }
+
+            return result;
+        }
     }
 }
