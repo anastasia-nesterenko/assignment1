@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\Letzteleben\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Letzteleben\\.nuget\\packages"
+    ]
+  }
+}
